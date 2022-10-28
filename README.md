@@ -98,7 +98,7 @@ minicom -b 115200 -D /dev/ttyUSB0 -C samples.data
 This provides the interaction with the Arduino required to start a sampling processs and
 simultaeously captures the resulting data in a local file (sample.data) for further analysis.
 
-How fast is this, what do the delat times really indicate?
+How fast is this, what do the delta times really indicate?
 
 The base clock frequency of the above I2C data is 100 KHz, a moderate speed for I2C.  Given
 that (during I2C transmissions) the average delta value between samples is about 2 then this
