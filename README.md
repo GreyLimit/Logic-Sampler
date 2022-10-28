@@ -33,7 +33,7 @@ The dynamic configuration works as follows:
 If you select a high trigger, and the line is already high it waits for the line to go low
 before waiting for the low-high edge trigger.
 
-If select a low trigger, the reverse applies. 
+If you select a low trigger, the reverse applies. 
 
 When a sample is triggered (or simple started) the output displays thus:
 ```
