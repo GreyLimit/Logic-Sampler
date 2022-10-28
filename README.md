@@ -5,7 +5,7 @@ A pair of programs (for the moment) that enable a "cheap as chips" approach to i
 The two programs are a sketch for an Arduino Mega 2560 which performs capture of binary data and a companion Linux command line program
 which performs post-processing to include a basic analysis of any I2C protocol identified.
 
-## LogicAnalyser.ino
+## LogicSampler.ino
 
 This basic script works in a simple manner:  It waits for input after which (on reciept) it proceeds to capture as much data from port K (all
 8 bits) into memory.  Once the memory buffer is full it outputs a data an "ASCII Art" version of the data captured to allow a visual analysis
