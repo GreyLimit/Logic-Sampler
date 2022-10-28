@@ -16,9 +16,27 @@ At this point a futher capture and display cycle can be initiated with further i
 The output looks something like the following:
 ```
 Digital Sampler
-(press key to sample)
-Sampling!
+Keys:-
+0-7     Select trigger pin
+h       Trigger when pin goes high
+l       Trigger when pin goes low
+[CR]    Start sampling
+```
+The dynamic configuration works as follows:
 
+* Press one digit '0' through '7' to select the pin for the trigger
+* Press 'h' to trigger on a low->high transition
+* Press 'l' to trigger on a high->low transition
+* Press 'Enter' to start sampling
+* Press any other key to disable the trigger
+
+If you select a high trigger, and the line is already high it waits for the line to go low
+before waiting for the low-high edge trigger.
+
+If select a low trigger, the reverse applies. 
+
+When a sample is triggered (or simple started) the output displays thus:
+```
 index   delta   sample  7       6       5       4       3       2       1       0
 0       250     96      | .     . |     . |     | .     | .     | .     | .     | .  
 1       250     96      | .     . |     . |     | .     | .     | .     | .     | .  
