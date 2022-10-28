@@ -8,7 +8,7 @@ which performs post-processing to include a basic analysis of any I2C protocol i
 ## LogicAnalyser.ino
 
 This basic script works in a simple manner:  It waits for input after which (on reciept) it proceeds to capture as much data from port K (all
-8 bits) into memory.  Once the memory buffer is full it outputs a data and "ASCII Art" version of the data captured to allow a visual analysis
+8 bits) into memory.  Once the memory buffer is full it outputs a data an "ASCII Art" version of the data captured to allow a visual analysis
 of the data caught.
 
 At this point a futher capture and display cycle can be initiated with further input (notionally just pressing enter).
