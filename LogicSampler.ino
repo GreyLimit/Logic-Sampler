@@ -77,6 +77,13 @@ static byte		last_sample,
 			counter;
 
 //
+//	Declare an 'input buffer' used to capture the dynamically
+//	input 'trigger' pin.  
+//
+static int	trigger;
+static bool	trigger_high;
+
+//
 //	Run the sampler, once.
 //
 static void run_sampler( void ) {
@@ -87,12 +94,41 @@ static void run_sampler( void ) {
 	//
 	samples_left = max_samples;
 	next_sample = sample;
-	last_sample = SAMPLE_INPUT;
 	counter = REPEAT_DURATION;
 	//
 	//	Fill up the available space
 	//
 	noInterrupts();
+	if(( trigger >= 0 )&&( trigger <= 7 )) {
+		int	b;
+		
+		b = 1 << trigger;
+		if( trigger_high ) {
+			while(( last_sample = SAMPLE_INPUT & b ));
+			while(!( this_sample = SAMPLE_INPUT & b )) {
+				last_sample = this_sample;
+			}
+		}
+		else {
+			while(!( last_sample = SAMPLE_INPUT & b ));
+			while(( this_sample = SAMPLE_INPUT & b )) {
+				last_sample = this_sample;
+			}
+		}
+		next_sample->delta = REPEAT_DURATION;
+		next_sample->data = last_sample;
+		next_sample++;
+		samples_left--;
+		next_sample->delta = REPEAT_DURATION;
+		next_sample->data = this_sample;
+		next_sample++;
+		samples_left--;
+		last_sample = this_sample;
+		counter = REPEAT_DURATION;
+	}
+	else {
+		last_sample = SAMPLE_INPUT;
+	}
 	while( samples_left ) {
 		if((( this_sample = SAMPLE_INPUT ) != last_sample )||( !counter )) {
 			next_sample->delta = counter;
@@ -161,19 +197,27 @@ void setup( void ) {
 	//
 	//	Initialize serial and wait for port to open:
 	//
-	Serial.begin(115200);
+	Serial.begin( 115200 );
 	while( !Serial );	// wait for serial port to connect. Needed for native USB port only
 
 	//
 	//	Display banner.
 	//
 	Serial.println( "Digital Sampler" );
-	Serial.println( "(press key to sample)" );
+	Serial.println( "Keys:-" );
+	Serial.println( "0-7\tSelect trigger pin" );
+	Serial.println( "h\tTrigger when pin goes high" );
+	Serial.println( "l\tTrigger when pin goes low" );
+	Serial.println( "[CR]\tStart sampling" );
 	//
-	//	Initialis the input PORT we will be using.
+	//	Initialise the input PORT we will be using.
 	//
 	SAMPLE_DIR = 0;		// All pin are input.
 	SAMPLE_OUTPUT = 0;	// with no pullup.
+	//
+	//	Set default trigger details: none.
+	//
+	trigger = -1;
 }
 
 //
@@ -183,12 +227,41 @@ void setup( void ) {
 //
 void loop( void ) {
 	if( Serial.available()) {
-		while( Serial.available()) (void)Serial.read();
-		//
-		//	Execute a sample run.
-		//
-		Serial.println( "Sampling!" );
-		run_sampler();
+		char	in;
+		
+		in = Serial.read();
+		if(( in == '\n' )||( in == '\r' )) {
+			//
+			//	Execute a sample run.
+			//
+			if( trigger >= 0 ) {
+				Serial.print( "Trigger on " );
+				Serial.print( trigger );
+				if( trigger_high ) {
+					Serial.println( " -> high" );
+				}
+				else {
+					Serial.println( " -> low" );
+				}
+			}
+			else {
+				Serial.println( "Sampling!" );
+			}
+			run_sampler();
+		}
+		else {
+			if(( in == 'h' )||( in == 'l' )) {
+				trigger_high = ( in == 'h' );
+			}
+			else {
+				if(( in >= '0' )&&( in <= '7' )) {
+					trigger = in - '0';
+				}
+				else {
+					trigger = -1;
+				}
+			}
+		}
 	}
 }
 
