@@ -153,6 +153,7 @@ static void run_sampler( void ) {
 		Serial.print( b-1 );
 	}
 	Serial.println();
+	next = 0;
 	for( word i = 0; i < max_samples; i++ ) {
 		here = sample[ i ].data;
 		if( i < ( max_samples - 1 )) next = sample[ i + 1 ].data;
