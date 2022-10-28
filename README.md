@@ -86,8 +86,8 @@ The above is an I2C Bus communication with the Clock on pin 6 and the Data on pi
 The three leading numbers are as follows:
 
 * The sample index number 0 to 2999 (at the moment)
-* The 'skipped sampes' between this sample and the previous sample (maximum 250)
-* The raw didgital value read from the input port (current port K)
+* The 'skipped sampes' between this sample and the previous sample (maximum 250) where the samples remained unchanged
+* The raw digital value read from the input port (current port K)
 
 At this level there is no analysis of the data.
 
