@@ -35,7 +35,7 @@ before waiting for the low-high edge trigger.
 
 If you select a low trigger, the reverse applies. 
 
-When a sample is triggered (or simple started) the output displays thus:
+When a sample is triggered (or simply started) the output displays thus:
 ```
 index   delta   sample  7       6       5       4       3       2       1       0
 0       250     96      | .     . |     . |     | .     | .     | .     | .     | .  
